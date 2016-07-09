@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MarkDown/MathJax Render options</title>
+    <link href="themes/bootstrap/bootstrap.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+  </head>
+  <body>
+
+    <main id="content" class="container-fluid">
+
+      <h1>MarkDown/MathJax Render Options</h1>
+
+      <div id="msg"></div>
+
+      <section>
+        <div class="page-header">
+          <h2>Reload</h2>
+        </div>
+
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label for="reload-freq" class="col-sm-2 control-label">Frequency</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="reload-freq">
+                <option value="3">3 seconds</option>
+                <option value="1">1 second</option>
+                <option value="2">2 seconds</option>
+                <option value="4">4 seconds</option>
+                <option value="5">5 seconds</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-3">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="auto-reload"> Enable auto-reload
+                </label>
+              </div>
+            </div>
+          </div>
+          </form>
+      </section>
+      
+      <section>
+        <div class="page-header">
+          <h2>Theme</h2>
+        </div>
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label for="pgtheme" class="col-sm-2 control-label">Page Theme</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="pgtheme">
+	        <option>bootstrap</option>
+	        <option>cerulean</option>
+	        <option>cosmo</option>
+	        <option>cyborg</option>
+	        <option>darkly</option>
+	        <option>flatly</option>
+	        <option>journal</option>
+	        <option>lumen</option>
+	        <option>paper</option>
+	        <option>readable</option>
+	        <option>sandstone</option>
+	        <option>simplex</option>
+	        <option>slate</option>
+	        <option>spacelab</option>
+	        <option>superhero</option>
+	        <option>united</option>
+	        <option>yeti</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cdtheme" class="col-sm-2 control-label">Code Theme</label>
+            <div class="col-sm-3">
+              <select class="form-control" id="cdtheme">
+                <option>agate</option>
+                <option>androidstudio</option>
+                <option>arduino-light</option>
+                <option>arta</option>
+                <option>ascetic</option>
+                <option>atelier-cave-dark</option>
+                <option>atelier-cave-light</option>
+                <option>atelier-dune-dark</option>
+                <option>atelier-dune-light</option>
+                <option>atelier-estuary-dark</option>
+                <option>atelier-estuary-light</option>
+                <option>atelier-forest-dark</option>
+                <option>atelier-forest-light</option>
+                <option>atelier-heath-dark</option>
+                <option>atelier-heath-light</option>
+                <option>atelier-lakeside-dark</option>
+                <option>atelier-lakeside-light</option>
+                <option>atelier-plateau-dark</option>
+                <option>atelier-plateau-light</option>
+                <option>atelier-savanna-dark</option>
+                <option>atelier-savanna-light</option>
+                <option>atelier-seaside-dark</option>
+                <option>atelier-seaside-light</option>
+                <option>atelier-sulphurpool-dark</option>
+                <option>atelier-sulphurpool-light</option>
+                <option>brown-paper</option>
+                <option>codepen-embed</option>
+                <option>color-brewer</option>
+                <option>dark</option>
+                <option>darkula</option>
+                <option>default</option>
+                <option>docco</option>
+                <option>dracula</option>
+                <option>far</option>
+                <option>foundation</option>
+                <option>github-gist</option>
+                <option>github</option>
+                <option>googlecode</option>
+                <option>grayscale</option>
+                <option>gruvbox-dark</option>
+                <option>gruvbox-light</option>
+                <option>hopscotch</option>
+                <option>hybrid</option>
+                <option>idea</option>
+                <option>ir-black</option>
+                <option>kimbie.dark</option>
+                <option>kimbie.light</option>
+                <option>magula</option>
+                <option>mono-blue</option>
+                <option>monokai-sublime</option>
+                <option>monokai</option>
+                <option>obsidian</option>
+                <option>ocean</option>
+                <option>paraiso-dark</option>
+                <option>paraiso-light</option>
+                <option>pojoaque</option>
+                <option>purebasic</option>
+                <option>qtcreator_dark</option>
+                <option>qtcreator_light</option>
+                <option>railscasts</option>
+                <option>rainbow</option>
+                <option>school-book</option>
+                <option>solarized-dark</option>
+                <option>solarized-light</option>
+                <option>sunburst</option>
+                <option>tomorrow-night-blue</option>
+                <option>tomorrow-night-bright</option>
+                <option>tomorrow-night-eighties</option>
+                <option>tomorrow-night</option>
+                <option>tomorrow</option>
+                <option>vs</option>
+                <option>xcode</option>
+                <option>xt256</option>
+                <option>zenburn</option>
+              </select>
+            </div>
+          </div>
+        </form>
+
+        <section>
+        <div class="page-header">
+          <h2>Recognized file extensions</h2>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-1 exts">
+            <div class="checkbox"><label><input type="checkbox" value="http://*/*.md*" checked="checked">http://*/*.md*</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="http://*/*.mkd*" checked="checked">http://*/*.mkd*</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="http://*/*.mdown*" checked="checked">http://*/*.mdown*</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="http://*/*.markdown*" checked="checked">http://*/*.markdown*</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="http://*/*.txt*" checked="checked">http://*/*.txt*</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="http://*/*.text*" checked="checked">http://*/*.text*</label></div>
+          </div>
+          <div class="col-sm-offset-1 col-sm-1 exts">
+            <div class="checkbox"><label><input type="checkbox" value="https://*/*.md*" checked="checked">https://*/*.md*</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="https://*/*.mkd*" checked="checked">https://*/*.mkd*</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="https://*/*.mdown*" checked="checked">https://*/*.mdown*</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="https://*/*.markdown*" checked="checked">https://*/*.markdown*</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="https://*/*.txt*" checked="checked">https://*/*.txt*</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="https://*/*.text*" checked="checked">https://*/*.text*</label></div>
+          </div>
+          <div class="col-sm-offset-2 col-sm-1 exts">
+            <div class="checkbox"><label><input type="checkbox" value="file://*/*.md" checked="checked">file://*/*.md</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="file://*/*.mkd" checked="checked">file://*/*.mkd</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="file://*/*.mdown" checked="checked">file://*/*.mdown</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="file://*/*.markdown" checked="checked">file://*/*.markdown</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="file://*/*.txt" checked="checked">file://*/*.txt</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="file://*/*.text" checked="checked">file://*/*.text</label></div>
+          </div>
+        </div>
+      </section>
+      
+    </main>
+
+    <script src="js/options.js"></script>
+  </body>
+</html>
