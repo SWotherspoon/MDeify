@@ -9,7 +9,7 @@ Can be set to periodically reload to reflect changes in the document.
 ## Features
 
 1. [MathJax](https://www.mathjax.org/) within markdown. Use
-   `\\(...\\)` for inline math, `\\[...\\]` for displayed math.
+   `\(...\)` for inline math, `\[...\]` for displayed math.
 1. Pandoc style footnotes through the
    [markdown-it-footnote](https://github.com/markdown-it/markdown-it-footnote)
    plugin.
