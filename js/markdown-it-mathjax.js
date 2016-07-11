@@ -5,107 +5,81 @@
     root.markdownitMathjax = factory()
   }
 })(this, function () {
-  function math (state, silent) {
-    var startMathPos = state.pos
-    if (state.src.charCodeAt(startMathPos) !== 0x5C /* \ */) {
-      return false
-    }
-    var match = state.src.slice(++startMathPos).match(/^(?:\\\[|\\\(|begin\{([^}]*)\})/)
-    if (!match) {
-      return false
-    }
-    startMathPos += match[0].length
-    var type, endMarker, includeMarkers
-    if (match[0] === '\\[') {
-      type = 'display_math'
-      endMarker = '\\\\]'
-    } else if (match[0] === '\\(') {
-      type = 'inline_math'
-      endMarker = '\\\\)'
-    } else if (match[1]) {
-      type = 'math'
-      endMarker = '\\end{' + match[1] + '}'
-      includeMarkers = true
-    }
-    var endMarkerPos = state.src.indexOf(endMarker, startMathPos)
-    if (endMarkerPos === -1) {
-      return false
-    }
-    var nextPos = endMarkerPos + endMarker.length
+  function math_inline(state, silent) {
+    var start = state.pos
+    if (state.src.charCodeAt(start) !== 0x5C ||
+        state.src.charCodeAt(start+1) !== 0x28) {return false; }
+    start += 2
+    var end = state.src.indexOf('\\)', start)
+    if (end === -1) { return false; }
     if (!silent) {
-      var token = state.push(type, '', 0)
-      token.content = includeMarkers
-        ? state.src.slice(state.pos, nextPos)
-        : state.src.slice(startMathPos, endMarkerPos)
+      var token = state.push('math_inline', 'math', 0)
+      token.content = state.src.slice(start, end)
     }
-    state.pos = nextPos
+    state.pos = end+2
     return true
   }
-
-  function texMath (state, silent) {
-    var startMathPos = state.pos
-    if (state.src.charCodeAt(startMathPos) !== 0x24 /* $ */) {
-      return false
+  function math_block(state, start, end, silent){
+    var firstLine, lastLine, next, lastPos, found = false, token,
+        pos = state.bMarks[start] + state.tShift[start],
+        max = state.eMarks[start]
+    
+    if((pos + 2 > max) || state.src.slice(pos,pos+2)!=='\\['){ return false; }
+    pos += 2;
+    
+    if(silent){ return true; }
+    firstLine = state.src.slice(pos,max);
+    if(firstLine.trim().slice(-2)==='\\]'){
+      // Single line expression
+      firstLine = firstLine.trim().slice(0, -2);
+      found = true;
     }
 
-    // Parse tex math according to http://pandoc.org/README.html#math
-    var endMarker = '$'
-    var afterStartMarker = state.src.charCodeAt(++startMathPos)
-    if (afterStartMarker === 0x24 /* $ */) {
-      endMarker = '$$'
-      if (state.src.charCodeAt(++startMathPos) === 0x24 /* $ */) {
-        // 3 markers are too much
-        return false
+    for(next = start; !found; ){
+      next++;
+      if(next >= end){ break; }
+      
+      pos = state.bMarks[next]+state.tShift[next];
+      max = state.eMarks[next];
+      
+      if(pos < max && state.tShift[next] < state.blkIndent){
+        // non-empty line with negative indent should stop the list:
+        break;
       }
-    } else {
-      // Skip if opening $ is succeeded by a space character
-      if (afterStartMarker === 0x20 /* space */ || afterStartMarker === 0x09 /* \t */ || afterStartMarker === 0x0a /* \n */) {
-        return false
+      
+      if(state.src.slice(pos,max).trim().slice(-2)==='\\]'){
+        lastPos = state.src.slice(0,max).lastIndexOf('\\]');
+        lastLine = state.src.slice(pos,lastPos);
+        found = true;
       }
+      
     }
-    var endMarkerPos = state.src.indexOf(endMarker, startMathPos)
-    if (endMarkerPos === -1) {
-      return false
-    }
-    if (state.src.charCodeAt(endMarkerPos - 1) === 0x5C /* \ */) {
-      return false
-    }
-    var nextPos = endMarkerPos + endMarker.length
-    if (endMarker.length === 1) {
-      // Skip if $ is preceded by a space character
-      var beforeEndMarker = state.src.charCodeAt(endMarkerPos - 1)
-      if (beforeEndMarker === 0x20 /* space */ || beforeEndMarker === 0x09 /* \t */ || beforeEndMarker === 0x0a /* \n */) {
-        return false
-      }
-      // Skip if closing $ is succeeded by a digit (eg $5 $10 ...)
-      var suffix = state.src.charCodeAt(nextPos)
-      if (suffix >= 0x30 && suffix < 0x3A) {
-        return false
-      }
-    }
+    
+    state.line = next + 1;
 
-    if (!silent) {
-      var token = state.push(endMarker.length === 1 ? 'inline_math' : 'display_math', '', 0)
-      token.content = state.src.slice(startMathPos, endMarkerPos)
-    }
-    state.pos = nextPos
-    return true
+    token = state.push('math_block', 'math', 0);
+    token.block = true;
+    token.content = (firstLine && firstLine.trim() ? firstLine + '\n' : '')
+      + state.getLines(start + 1, next, state.tShift[start], true)
+      + (lastLine && lastLine.trim() ? lastLine : '');
+    token.map = [ start, state.line ];
+    return true;
   }
 
   function escapeHtml (html) {
     return html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ')
   }
-
+  
   return function (md) {
-    md.inline.ruler.before('escape', 'math', math)
-    md.inline.ruler.push('texMath', texMath)
-    md.renderer.rules.math = function (tokens, idx) {
-      return escapeHtml(tokens[idx].content)
-    }
-    md.renderer.rules.inline_math = function (tokens, idx) {
+    md.inline.ruler.before('escape', 'math_inline', math_inline)
+    md.block.ruler.after('blockquote', 'math_block', math_block, {
+        alt: [ 'paragraph', 'reference', 'blockquote', 'list' ]
+    })
+
+    md.renderer.rules.math_inline = function (tokens, idx) {
       return '\\(' + escapeHtml(tokens[idx].content) + '\\)'
     }
-    md.renderer.rules.display_math = function (tokens, idx) {
+    md.renderer.rules.math_block = function (tokens, idx) {
       return '\\[' + escapeHtml(tokens[idx].content) + '\\]'
     }
   }

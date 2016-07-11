@@ -8,15 +8,14 @@ Can be set to periodically reload to reflect changes in the document.
 
 ## Features
 
-1. [MathJax](https://www.mathjax.org/) within markdown through the
-   [markdown-it-mathjax](https://github.com/classeur/markdown-it-mathjax)
-   plugin. Use `\\(...\\)` for inline math, `\\[...\\]` for displayed math.
+1. [MathJax](https://www.mathjax.org/) within markdown. Use
+   `\\(...\\)` for inline math, `\\[...\\]` for displayed math.
 1. Pandoc style footnotes through the
    [markdown-it-footnote](https://github.com/markdown-it/markdown-it-footnote)
    plugin.
 1. Code highlighting with [highlightjs](https://highlightjs.org/).
 1. [Bootswatch](http://bootswatch.com/) themes.
-1. Live editing by preiodic reloading.
+1. Live editing by periodic reloading.
 
 ## Usage
 
