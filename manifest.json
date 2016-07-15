@@ -5,9 +5,10 @@
 
   "description": "Render markdown/mathajx files as HTML.",
   "icons": {
-    "128": "images/icon.png",
-    "48": "images/icon.png",
-    "16": "images/icon.png"
+    "128": "images/icon128.png",
+    "48": "images/icon48.png",
+    "19": "images/icon19.png",
+    "16": "images/icon16.png"
   },
 
   "content_scripts": [
